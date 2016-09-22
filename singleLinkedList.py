@@ -48,10 +48,12 @@ class LinkedList(object):
 
     def __str__(self):
         curr_node = self.head
+        count_nodes_traversed = 1
         res_str = 'LinkedList['
-        while curr_node != None:
+        while count_nodes_traversed <= self.size:
             res_str = res_str + str(curr_node) + ' -> '
             curr_node = curr_node.get_next_node()
+            count_nodes_traversed = count_nodes_traversed + 1
         res_str = res_str + str(curr_node) + ']'
         return res_str
 
@@ -101,5 +103,7 @@ if __name__ == "__main__":
     print(a_node)
 
     a_list = LinkedList(a_node)
-    a_list.append_data(6)
+    #a_list.append_data(3)
+    #a_list.append_data(2)
+    #a_list.append_data(1)
     print(a_list)
