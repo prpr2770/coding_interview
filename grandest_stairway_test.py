@@ -56,15 +56,43 @@ def numways2(n,ref):
                     key = (n-idx)
                     countways = countways + numways2(key,idx)
                 #update dictionary with value:
-                print("update dict (n,ref) = (%d,%d) with (n= %d, ways = %d)" %(n,ref,n,countways))
+                #print("update dict (n,ref) = (%d,%d) with (n= %d, ways = %d)" %(n,ref,n,countways))
                 dict_numways[n] = countways
         else: # n > ref
-            if n/2 < ref:
+            if (n-1)/2  < ref: #(n-1)/2 < ref:
                 for idx in xrange(ref-1,0,-1):
-                        countways =  countways + numways2(n-idx,idx) # works slow.
-                    #countways =  countways + numways2(n-idx,ref) # is this correct?
-    #print('\t %d' % countways)
-    print('\t (n,ref,ways) = (%d,%d,%d) ' % (n,ref,countways))
+                    #countways =  countways + numways2(n-idx,idx) # works slow.
+                    #countways =  countways + numways2(idx,n-idx) # works slow.
+                    countways =  countways + numways2(idx,ref) # is this correct?
+    #print('\t (n,ref,ways) = (%d,%d,%d) ' % (n,ref,countways))
+    return countways
+
+
+
+def numways3(n,ref):
+    # return the total number of paths available.
+    #str_seq = str_seq + "("+ str(n) + ","+ str(ref) + ") -> "
+    countways = 0
+    if n>2:
+        if n<= ref: # vanilla case!
+            if n in dict_numways.keys():
+                countways = dict_numways[n]
+            else: # value NOT present in dictionary
+                # compute the ways-count
+                countways = (n-1)/2
+                for idx in xrange(n-1,0,-1):
+                    countways = countways + numways3(n-idx,idx)
+                #update dictionary with value:
+                #print("update dict (n,ref) = (%d,%d) with (n= %d, ways = %d)" %(n,ref,n,countways))
+                dict_numways[n] = countways
+        else: # n > ref
+            if (n)/2  < ref: #(n-1)/2 < ref:
+                countways = (ref - n + ref - 1)/2
+                for idx in xrange(ref-1,0,-1):
+                    countways =  countways + numways3(n-idx,idx) # works slow.
+                    #countways =  countways + numways3(idx,n-idx) # works slow.
+                    #countways =  countways + numways3(idx,ref) # is this correct?
+    #print('\t (n,ref,ways) = (%d,%d,%d) ' % (n,ref,countways))
     return countways
 
 
@@ -77,7 +105,7 @@ if __name__ == "__main__":
 
     n = Nmax
     #print("algo1: (n= %d, ways = %d )"% (n, numways(n,n)))
-
-    print("algo2:  (n= %d, ways = %d )"% (n, numways2(n,n)))
+    #for n in xrange(1,Nmax+1):
+    print("algo3:  (n= %d, ways = %d )"% (n, numways3(n,n)))
     #print(dict_numways)
     #print str_seq
