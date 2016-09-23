@@ -95,17 +95,57 @@ def numways3(n,ref):
     #print('\t (n,ref,ways) = (%d,%d,%d) ' % (n,ref,countways))
     return countways
 
+# ================================================================
+
+
+dict_numways = {}
+
+def numways4(n,ref):
+    # return the total number of paths available.
+    #str_seq = str_seq + "("+ str(n) + ","+ str(ref) + ") -> "
+    countways = 0
+    if n>2:
+        if n<= ref: # vanilla case!
+            if (n,n) in dict_numways.keys():
+                countways = dict_numways[(n,n)]
+            else: # value NOT present in dictionary
+                # compute the ways-count
+                countways = (n-1)/2
+                for idx in xrange(n-1,1,-1):
+                    countways = countways + numways4(n-idx,idx)
+                #update dictionary with value:
+                #print("update dict (n,ref) = (%d,%d) with (n= %d, ways = %d)" %(n,ref,n,countways))
+                dict_numways[(n,n)] = countways
+        else: # n > ref
+            if (n)/2  <   ref: #(n-1)/2 < ref:
+                if (n,ref) in dict_numways.keys():
+                    countways = dict_numways[(n,ref)]
+                else: # value NOT present in dictionary
+                    countways = (ref - n + ref - 1)/2
+                    #countways = (ref - 1) - (n)/2
+                    for idx in xrange(ref -1 ,1,-1):
+                        countways =  countways + numways4(n-idx,idx) # algo4:  (n= 200, ways = 11023274 )
+                        #countways =  countways + numways4(idx,n-idx) # algo4:  (n= 200, ways = 7545824 )
+                        #countways =  countways + numways4(idx,ref) # algo4:  (n= 200, ways = 47331800 )
+                        #countways =  countways + numways4(n-idx,ref) # (n= 200, ways = 7486336350315701753277 )
+                    dict_numways[(n,ref)] = countways
+    #print('\t (n,ref,ways) = (%d,%d,%d) ' % (n,ref,countways))
+    return countways
 
 
 if __name__ == "__main__":
 
-    Nmax = 200
+    Nmax = 13
     #for n in xrange(1,Nmax+1):
     #    print(" (n= %d, ways = %d )"% (n, numways(n,n)))
 
     n = Nmax
     #print("algo1: (n= %d, ways = %d )"% (n, numways(n,n)))
     #for n in xrange(1,Nmax+1):
-    print("algo3:  (n= %d, ways = %d )"% (n, numways3(n,n)))
-    #print(dict_numways)
-    #print str_seq
+
+    #print("algo2:  (n= %d, ways = %d )"% (n, numways2(n,n)))
+
+    #print("algo3:  (n= %d, ways = %d )"% (n, numways3(n,n)))
+
+    #for n in xrange(1,Nmax+1):
+    print("algo4:  (n= %d, ways = %d )"% (n, numways4(n,n)))
